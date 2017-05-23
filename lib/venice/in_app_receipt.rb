@@ -42,6 +42,9 @@ module Venice
     # For a transaction that was canceled by Apple customer support, the time and date of the cancellation.
     attr_reader :cancellation_at
 
+    def trial?
+      @is_trial_period
+    end
 
     def initialize(attributes = {})
       @quantity = Integer(attributes['quantity']) if attributes['quantity']
@@ -56,6 +59,8 @@ module Venice
 
       # cancellation_date is in ms since the Epoch, Time.at expects seconds
       @cancellation_at = Time.at(attributes['cancellation_date'].to_i / 1000) if attributes['cancellation_date']
+
+      @is_trial_period = attributes['is_trial_period']
 
       if attributes['original_transaction_id'] || attributes['original_purchase_date']
         original_attributes = {
@@ -79,7 +84,8 @@ module Venice
         :app_item_id => @app_item_id,
         :version_external_identifier => @version_external_identifier,
         :expires_at => (@expires_at.httpdate rescue nil),
-        :cancellation_at => (@cancellation_at.httpdate rescue nil)
+        :cancellation_at => (@cancellation_at.httpdate rescue nil),
+        :is_trial_period => @is_trial_period
       }
     end
     alias_method :to_h, :to_hash

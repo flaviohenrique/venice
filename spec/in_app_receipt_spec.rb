@@ -20,7 +20,8 @@ describe Venice::InAppReceipt do
         "version_external_identifier" => "123",
         "app_item_id" => 'com.foo.app1',
         "expires_date" => "2014-06-28 07:47:53 America/Los_Angeles",
-        "expires_date_ms" => "1403941673000"
+        "expires_date_ms" => "1403941673000",
+        "is_trial_period" => "true"
       }
     end
 
@@ -36,6 +37,7 @@ describe Venice::InAppReceipt do
     its(:version_external_identifier) { "123" }
     its(:original) { should be_instance_of Venice::InAppReceipt }
     its(:expires_at) { should be_instance_of Time }
+    its(:trial?)  { should be_truthy }
 
     it "should parse the 'original' attributes" do
       subject.original.should be_instance_of Venice::InAppReceipt
