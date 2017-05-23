@@ -43,7 +43,7 @@ module Venice
     attr_reader :cancellation_at
 
     def trial?
-      @is_trial_period
+      @is_trial_period == 'true'
     end
 
     def initialize(attributes = {})
